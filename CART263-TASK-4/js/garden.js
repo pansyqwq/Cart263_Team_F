@@ -70,7 +70,7 @@ window.onload = function () {
       garden.flowers[i].renderFlower();
     }
 
-    bird = new Bird(10, 10, 50);
+    bird = new Bird(100, 100, 50);
     bird.renderBird();
   }
   createAndRenderTheGarden();
