@@ -72,6 +72,7 @@ window.onload = function () {
 
     bird = new Bird(100, 100, 50);
     bird.renderBird();
+    bird.animate();
   }
   createAndRenderTheGarden();
 }
