@@ -3,8 +3,11 @@ window.onload = function () {
   let garden = {
     // An array to store the individual flowers
     flowers: [],
+    // An array to store the individual birds
+    birds: [],
     // How many flowers in the garden
     numFlowers: 40,
+    numBirds: 15,
     /*grass object */
     grass: {
       // The color of the grass (background)
@@ -70,9 +73,29 @@ window.onload = function () {
       garden.flowers[i].renderFlower();
     }
 
-    bird = new Bird(100, 100, 50);
-    bird.renderBird();
-    bird.animate();
+    // bird = new Bird(100, 100, 50);
+
+    //create some flowers
+    for (let i = 0; i < garden.numBirds; i++) {
+      // Create variables for our arguments for clarity
+      let x = Math.random() * (window.innerWidth);
+      let y = Math.random() * 120;
+      let size = Math.random() * 100 + 10;
+
+      // Create a new flower using the arguments
+      let bird = new Bird(x, y, size);
+      // Add the flower to the array of flowers
+      garden.birds.push(bird);
+    }
+
+    for (let i = 0; i < garden.numBirds; i++) {
+      // Add the flower to the array of flowers
+      garden.birds[i].renderBird();
+      garden.birds[i].animate();
+    }
+
+    // bird.renderBird();
+    // bird.animate();
   }
   createAndRenderTheGarden();
 }
