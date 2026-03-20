@@ -33,7 +33,8 @@ window.onload = function () {
     },
   };
   // new  sun instancce
-  let sun = new Sun(10, 10, { r: 240, g: 206, b: 83 })
+  let sun = new Sun(10, 10, { r: 240, g: 206, b: 83 });
+  let weather = new Weather("sunny", 25);
 
   function createAndRenderTheGarden() {
     /* note how we use dot notation....*/
@@ -52,7 +53,7 @@ window.onload = function () {
     //create some flowers
     for (let i = 0; i < garden.numFlowers; i++) {
       // Create variables for our arguments for clarity
-      let x = Math.random() * (window.innerWidth);
+      let x = Math.random() * window.innerWidth;
       let y = Math.random() * 120;
       let size = Math.random() * 30 + 10;
       let stemLength = Math.random() * 50 + 20;
@@ -73,33 +74,52 @@ window.onload = function () {
       garden.flowers[i].renderFlower();
     }
 
-    // bird = new Bird(100, 100, 50);
+    setInterval(() => {
+      if (weather.state === "sunny") {
+        let options = ["raining", "cloudy"];
+        weather.state = options[Math.floor(Math.random() * options.length)];
+        weather.renderWeather();
+      } else if (weather.state === "raining") {
+        let options = ["sunny", "cloudy"];
+        weather.state = options[Math.floor(Math.random() * options.length)];
+        weather.renderWeather();
+      } else {
+        let options = ["sunny", "raining"];
+        weather.state = options[Math.floor(Math.random() * options.length)];
+        weather.renderWeather();
+      }
 
-    //create some flowers
-    for (let i = 0; i < garden.numBirds; i++) {
-      // Create variables for our arguments for clarity
-      let x = Math.random() * (window.innerWidth);
-      let y = Math.random() * 120;
-      let size = Math.random() * 100 + 10;
-
-      // Create a new flower using the arguments
-      let bird = new Bird(x, y, size);
-      // Add the flower to the array of flowers
-      garden.birds.push(bird);
-    }
-
-    for (let i = 0; i < garden.numBirds; i++) {
-      // Add the flower to the array of flowers
-      garden.birds[i].renderBird();
-      garden.birds[i].animate();
-    }
-
-    // bird.renderBird();
-    // bird.animate();
+      garden.birds.forEach((b) => b.setWeather(weather.state));
+      sun.weatherEffect(weather.state);
+    }, 6000);
+    weather.renderWeather();
   }
-  createAndRenderTheGarden();
-}
 
+  // bird = new Bird(100, 100, 50);
+
+  //create some flowers
+  for (let i = 0; i < garden.numBirds; i++) {
+    // Create variables for our arguments for clarity
+    let x = Math.random() * window.innerWidth;
+    let y = Math.random() * 120;
+    let size = Math.random() * 100 + 10;
+
+    // Create a new flower using the arguments
+    let bird = new Bird(x, y, size);
+    // Add the flower to the array of flowers
+    garden.birds.push(bird);
+  }
+
+  for (let i = 0; i < garden.numBirds; i++) {
+    // Add the flower to the array of flowers
+    garden.birds[i].renderBird();
+    garden.birds[i].animate();
+  }
+
+  // bird.renderBird();
+  // bird.animate();
+  createAndRenderTheGarden();
+};
 
 /*** TEAM A AND B NEED TO COORDINATE
  
@@ -153,7 +173,6 @@ and visually display the result
 * 
 */
 
-
 /*** TEAM E AND F NEED TO COORDINATE
 
 /** TEAM E BIRDS
@@ -169,15 +188,14 @@ and visually display the result
 * 
 */
 
-
 /**TEAM F -- Weather
-* 1/ Create a file to hold a Weather Class (i.e. Weather.js)
-* 2/ Create the Weather Class : a constructor which takes at LEAST 2 properties: weather "state" i.e. sunny, raining, cloudy as well as a variable to hold the current temp
-* 3/ Create a renderWeather() method -> which essentially will call one of a few custom methods to render the current weather:
-* 4/ If the weather is determined to be sunny then call the renderSunny() which will contain HTML element(s) - could be
-* images, svgs etc .... representing sunny weather, if the weather is determined to be rainy then one would call a renderRainy() etc ...
-* 5/ In garden.js instantiate a weather state + add the current temperature.
-* 6/ Implement the functionality such that at different time intervals the weather changes and or the temperature.
-* 7/ Ensure and Implement the functionality for the birds (collab with TEAM E) to be affected by the current weather and temperature.
-* 
-*/
+ * 1/ Create a file to hold a Weather Class (i.e. Weather.js)
+ * 2/ Create the Weather Class : a constructor which takes at LEAST 2 properties: weather "state" i.e. sunny, raining, cloudy as well as a variable to hold the current temp
+ * 3/ Create a renderWeather() method -> which essentially will call one of a few custom methods to render the current weather:
+ * 4/ If the weather is determined to be sunny then call the renderSunny() which will contain HTML element(s) - could be
+ * images, svgs etc .... representing sunny weather, if the weather is determined to be rainy then one would call a renderRainy() etc ...
+ * 5/ In garden.js instantiate a weather state + add the current temperature.
+ * 6/ Implement the functionality such that at different time intervals the weather changes and or the temperature.
+ * 7/ Ensure and Implement the functionality for the birds (collab with TEAM E) to be affected by the current weather and temperature.
+ *
+ */
