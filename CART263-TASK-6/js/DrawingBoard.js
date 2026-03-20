@@ -26,6 +26,18 @@ class DrawingBoard {
     //you can remove the console.logs /// 
     if (this.drawingBoardId === "partA") {
       console.log("in A");
+      if (this.objectsOnCanvas.length > 1) {
+        for (let i = this.objectsOnCanvas.length - 1; i >= 1; i--) {
+          let dx = this.mouseOffsetX - this.objectsOnCanvas[i].x;
+          let dy = this.mouseOffsetY - this.objectsOnCanvas[i].y;
+          let dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < this.objectsOnCanvas[i].radius) {
+            this.objectsOnCanvas.splice(i, 1);
+            break;
+          }
+        }
+      }
 
     }
     if (this.drawingBoardId === "partB") {
