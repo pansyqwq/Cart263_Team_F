@@ -1,6 +1,6 @@
 class DrawingBoard {
   /* Constructor */
-  constructor(canvas, context,drawingBoardId) {
+  constructor(canvas, context, drawingBoardId) {
     this.canvas = canvas;
     this.context = context;
     this.objectsOnCanvas = [];
@@ -24,41 +24,54 @@ class DrawingBoard {
     console.log(this.mouseOffsetX, this.mouseOffsetY);
     //differentiate which canvas
     //you can remove the console.logs /// 
-    if(this.drawingBoardId ==="partA"){
-      console.log("in A")
+    if (this.drawingBoardId === "partA") {
+      console.log("in A");
+
     }
-    if(this.drawingBoardId ==="partB"){
+    if (this.drawingBoardId === "partB") {
       console.log("in B")
     }
-    if(this.drawingBoardId ==="partC"){
+    if (this.drawingBoardId === "partC") {
       console.log("in C")
     }
-    if(this.drawingBoardId ==="partD"){
+    if (this.drawingBoardId === "partD") {
       console.log("in D")
-   }
+    }
   }
 
   clickCanvas(e) {
-   // console.log("clicked");
+    // console.log("clicked");
     this.canvasBoundingRegion = this.canvas.getBoundingClientRect();
     this.mouseOffsetX = parseInt(e.clientX - this.canvasBoundingRegion.x);
     this.mouseOffsetY = parseInt(e.clientY - this.canvasBoundingRegion.y);
     //console.log(this.mouseOffsetX, this.mouseOffsetY);
-     
+
     //differentiate which canvas
-   //you can remove the console.logs /// 
-     if(this.drawingBoardId ==="partA"){
-      console.log("in A")
+    //you can remove the console.logs /// 
+    if (this.drawingBoardId === "partA") {
+      console.log("in A");
+      let colors = ["#FFC300", "#FF5733", "#CF9FFF", "#7FDBFF", "#FF8FAB"];
+      let randomColor = colors[Math.floor(Math.random() * colors.length)];
+      this.addObj(
+        new CircularObj(
+          this.mouseOffsetX,
+          this.mouseOffsetY,
+          Math.random() * 20 + 10,
+          randomColor,
+          "#E6E6FA",
+          this.context
+        )
+      );
     }
-    if(this.drawingBoardId ==="partB"){
+    if (this.drawingBoardId === "partB") {
       console.log("in B")
     }
-    if(this.drawingBoardId ==="partC"){
+    if (this.drawingBoardId === "partC") {
       console.log("in C")
     }
-    if(this.drawingBoardId ==="partD"){
+    if (this.drawingBoardId === "partD") {
       console.log("in D")
-      }
+    }
   }
   /* method to add obj to canvas */
   addObj(objToAdd) {
@@ -74,14 +87,14 @@ class DrawingBoard {
 
   /* method to add animate objects on canvas */
   animate() {
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
     for (let i = 0; i < this.objectsOnCanvas.length; i++) {
-     this.context.clearRect(0,0,this.canvas.width,this.canvas.height)
-     this.objectsOnCanvas[i].update();
-     this.objectsOnCanvas[i].display();
+      this.objectsOnCanvas[i].update(this.mouseOffsetX, this.mouseOffsetY);
+      this.objectsOnCanvas[i].display();
     }
   }
 
-  run(videoElement){
+  run(videoElement) {
     for (let i = 0; i < this.objectsOnCanvas.length; i++) {
       this.objectsOnCanvas[i].update(videoElement);
       this.objectsOnCanvas[i].display();

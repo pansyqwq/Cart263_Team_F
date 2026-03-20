@@ -10,6 +10,8 @@ class CircularObj {
     this.startAngle = 0;
     this.endAngle = Math.PI * 2; //full rotation
     this.context = context;
+    this.baseRadius = radius;
+    this.angle = 0;
   }
 
   display() {
@@ -30,9 +32,13 @@ class CircularObj {
     this.context.stroke();
   }
 
-  update() {
-    //update circle
-    //this.x += 1;
-    //console.log("circle update");
+  update(mouseX, mouseY) {
+    if (mouseX !== undefined && mouseY !== undefined) {
+      this.x += (mouseX - this.x) * 0.02;
+      this.y += (mouseY - this.y) * 0.02;
+    }
+
+    this.angle += 0.05;
+    this.radius = this.baseRadius + Math.sin(this.angle) * 3;
   }
 }
