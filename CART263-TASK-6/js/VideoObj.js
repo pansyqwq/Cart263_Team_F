@@ -29,8 +29,13 @@ class VideoObj {
 
 
     let filterButton_sepia = document.getElementById("filter_button_sepia");//my button
-    let sepiaInput = document.getElementById("sepianum");//my input field (where user types blur value)
-    this.userProvidedSepia = 0;//Stores the blur value (default = 0 = no blur)
+    let sepiaInput = document.getElementById("sepianum");//my input field (where user types sepia value)
+    this.userProvidedSepia = 0;//Stores the sepia value (default = 0 = no sepia)
+
+    let filterButton_hue = document.getElementById("filter_button_hue");//my button
+    let hueInput = document.getElementById("huenum");//my input field (where user types hue value)
+    this.userProvidedHue = 0;//Stores the hue value (default = 0 = no hue)
+
     let self = this;
 
     filterButton_blur.addEventListener("click", function () {
@@ -41,8 +46,13 @@ class VideoObj {
 
     filterButton_sepia.addEventListener("click", function () {
       //get value from input field
-      self.userProvidedSepia = sepiaInput.value;//Saves the value into userProvidedBlur
+      self.userProvidedSepia = sepiaInput.value;//Saves the value into userProvidedSepia
       console.log(self.userProvidedSepia);
+    });
+     filterButton_hue.addEventListener("click", function () {
+      //get value from input field
+      self.userProvidedHue = hueInput.value;//Saves the value into userProvidedSepia
+      console.log(self.userProvidedHue);
     });
   }
 
@@ -51,7 +61,7 @@ class VideoObj {
 
   display() {
     this.context.save();
-    this.context.filter = `blur(${this.userProvidedBlur}px) sepia(${this.userProvidedSepia}%)`;
+    this.context.filter = `blur(${this.userProvidedBlur}px) sepia(${this.userProvidedSepia}%) hue-rotate(${this.userProvidedHue}deg)`;
     this.context.drawImage(this.videoElement, this.x, this.y, this.w, this.h);
     this.context.fillStyle = this.shapeCol;
     this.context.fillRect(this.shapeX, this.shapeY, 50, 50)
