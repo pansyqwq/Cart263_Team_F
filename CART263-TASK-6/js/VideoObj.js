@@ -25,7 +25,7 @@ class VideoObj {
     let filterButton_blur = document.getElementById("filter_button_blur");//my button
     let blurInput = document.getElementById("blurnum");//my input field (where user types blur value)
     this.userProvidedBlur = 0;//Stores the blur value (default = 0 = no blur)
-   
+
 
 
     let filterButton_sepia = document.getElementById("filter_button_sepia");//my button
@@ -35,6 +35,10 @@ class VideoObj {
     let filterButton_hue = document.getElementById("filter_button_hue");//my button
     let hueInput = document.getElementById("huenum");//my input field (where user types hue value)
     this.userProvidedHue = 0;//Stores the hue value (default = 0 = no hue)
+
+    let filterButton_invert = document.getElementById("filter_button_invert");//my button
+    let invertInput = document.getElementById("invertnum");
+    this.userProvidedInvert = 0;
 
     let self = this;
 
@@ -49,19 +53,27 @@ class VideoObj {
       self.userProvidedSepia = sepiaInput.value;//Saves the value into userProvidedSepia
       console.log(self.userProvidedSepia);
     });
-     filterButton_hue.addEventListener("click", function () {
+
+    filterButton_hue.addEventListener("click", function () {
       //get value from input field
-      self.userProvidedHue = hueInput.value;//Saves the value into userProvidedSepia
+      self.userProvidedHue = hueInput.value;//Saves the value into userProvidedHue
       console.log(self.userProvidedHue);
     });
-  }
 
- 
+    filterButton_invert.addEventListener("click", function () {
+      //get value from input field
+      self.userProvidedInvert = invertInput.value;//Saves the value into userProvidedHue
+      console.log(self.userProvidedInvert);
+    });
+
+  };
+
+
 
 
   display() {
     this.context.save();
-    this.context.filter = `blur(${this.userProvidedBlur}px) sepia(${this.userProvidedSepia}%) hue-rotate(${this.userProvidedHue}deg)`;
+    this.context.filter = `blur(${this.userProvidedBlur}px) sepia(${this.userProvidedSepia}%) hue-rotate(${this.userProvidedHue}deg) invert(${this.userProvidedInvert}%)`;
     this.context.drawImage(this.videoElement, this.x, this.y, this.w, this.h);
     this.context.fillStyle = this.shapeCol;
     this.context.fillRect(this.shapeX, this.shapeY, 50, 50)
