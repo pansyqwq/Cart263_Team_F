@@ -48,6 +48,9 @@ class DrawingBoard {
     }
     if (this.drawingBoardId === "partD") {
       console.log("in D")
+      if (this.objectsOnCanvas.length > 0) {
+        this.objectsOnCanvas[0].updatePositionRect(this.mouseOffsetX, this.mouseOffsetY);
+      }
     }
   }
 
