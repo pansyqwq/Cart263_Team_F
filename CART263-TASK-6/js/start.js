@@ -1,5 +1,7 @@
 window.onload = go_all_stuff;
 
+let drawingBoardC;
+
 function go_all_stuff() {
   console.log("go");
 
@@ -62,7 +64,7 @@ function go_all_stuff() {
   );
   drawingBoardB.display();
 
-  let drawingBoardC = new DrawingBoard(
+  drawingBoardC = new DrawingBoard(
     theCanvases[2],
     theContexts[2],
     theCanvases[2].id,
@@ -123,6 +125,10 @@ function go_all_stuff() {
    * -> the code for the microphone has NOT been added  - you need to implement it correctly...
    *
    */
+
+  getMicrophoneInput();
+
+
 
   /** TASK 4:(Video - recorded - )
    * // add filters or manipulate the pixels... take user input from the boxes..
