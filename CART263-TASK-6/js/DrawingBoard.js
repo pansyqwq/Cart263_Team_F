@@ -85,6 +85,10 @@ class DrawingBoard {
       console.log("in C")
     }
     if (this.drawingBoardId === "partD") {
+        if (this.objectsOnCanvas.length > 0) { 
+        let newCol = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+        this.objectsOnCanvas[0].changeColor(newCol);
+      }
       console.log("in D")
     }
   }

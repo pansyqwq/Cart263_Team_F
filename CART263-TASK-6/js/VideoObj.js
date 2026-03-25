@@ -82,7 +82,7 @@ class VideoObj {
 
   //called when rectangle color is to be updated
   changeColor(newCol) {
-    /** FILL IN */
+    this.shapeCol = newCol;
   }
   //called when rectangle Pos is to be updated
   updatePositionRect(mx, my) {
