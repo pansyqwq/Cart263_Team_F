@@ -26,11 +26,36 @@ export class PlanetF {
         this.group.castShadow = true;
         this.group.receiveShadow = true;
         this.group.add(mesh)
+       
 
 
         //STEP 2: 
         //TODO: Add from 1 to 3 orbiting moons to the planet group. 
         //TODO: The moons should rotate around the planet just like the planet group rotates around the Sun.
+        const geometry2 = new THREE.SphereGeometry(1, 7, 7)//3d dimension of the sphere
+        const material2 = new THREE.MeshStandardMaterial({ color: 0xce3072 })
+        const mesh_2 = new THREE.Mesh(geometry2, material2)
+        mesh_2.position.x = 3;
+        this.group.add(mesh_2)
+
+
+        const geometry3 = new THREE.SphereGeometry(1, 2, 2)//3d dimension of the sphere
+        const material3 = new THREE.MeshStandardMaterial({ color: 0xa6f1ac })
+        const mesh_3 = new THREE.Mesh(geometry3, material3)
+        mesh_3.position.x = 5;
+        mesh_3.position.y = 5;
+        this.group.add(mesh_3)
+
+
+
+        const geometry4 = new THREE.SphereGeometry(1, 10, 10)//3d dimension of the sphere
+        const material4 = new THREE.MeshStandardMaterial({ color: 0xbaa44a })
+        const mesh_4 = new THREE.Mesh(geometry4, material4)
+        mesh_4.position.x = 7;
+        mesh_4.position.y = -2;
+        this.group.add(mesh_4)
+      
+     
 
         //STEP 3:
         //TODO: Load Blender models to populate the planet with multiple props and critters by adding them to the planet group.
