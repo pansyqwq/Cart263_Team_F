@@ -56,6 +56,7 @@ export class PlanetF {
         this.group.add(mesh_4)
       
      
+        //Ziyan Pan and Xueyi Xia did step 1 and 2
 
         //STEP 3:
         //TODO: Load Blender models to populate the planet with multiple props and critters by adding them to the planet group.
