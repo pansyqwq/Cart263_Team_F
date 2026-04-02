@@ -19,20 +19,13 @@ export class PlanetF {
         //TODO: Add the planet mesh to the planet group.
 
 
+
         const geometry = new THREE.SphereGeometry(2, 10, 10)//3d dimension of the sphere
-        const material = new THREE.MeshBasicMaterial({ color: 0x95d4ee })
+        const material = new THREE.MeshStandardMaterial({ color: 0x95d4ee })
         const mesh = new THREE.Mesh(geometry, material)
+        this.group.castShadow = true;
+        this.group.receiveShadow = true;
         this.group.add(mesh)
-
-        // const sizes = {
-        //     width: 800,
-        //     height: 600
-        // }
-        // const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
-        // scene.add(camera)
-
-        // camera.position.z = 3
-        // camera.lookAt(mesh.position)
 
 
         //STEP 2: 
