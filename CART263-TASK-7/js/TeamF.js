@@ -10,6 +10,16 @@ export class PlanetF {
     this.orbitSpeed = orbitSpeed;
     this.angle = Math.random() * Math.PI * 2;
 
+    this.clickableObjects = [];
+    this.raycaster = new THREE.Raycaster();
+
+    this.isPlanetAnimating = false;
+    this.animationTime = 0;
+
+    this.planetMesh = null;
+    this.moons = [];
+    this.props = [];
+
     //Create planet group
     this.group = new THREE.Group();
 
@@ -25,30 +35,63 @@ export class PlanetF {
     const mesh = new THREE.Mesh(geometry, material);
     this.group.castShadow = true;
     this.group.receiveShadow = true;
+    this.planetMesh = mesh;
     this.group.add(mesh);
+    this.clickableObjects.push(mesh);
 
     //STEP 2:
     //TODO: Add from 1 to 3 orbiting moons to the planet group.
-    //TODO: The moons should rotate around the planet just like the planet group rotates around the Sun.
+    //TODO: The moons should rotate around the planet just lik  e the planet group rotates around the Sun.
     const geometry2 = new THREE.SphereGeometry(1, 7, 7); //3d dimension of the sphere
     const material2 = new THREE.MeshStandardMaterial({ color: 0xce3072 });
     const mesh_2 = new THREE.Mesh(geometry2, material2);
-    mesh_2.position.x = 3;
+    // mesh_2.position.x = 3;
+    // this.group.add(mesh_2);
+    mesh_2.castShadow = true;
+    mesh_2.receiveShadow = true;
     this.group.add(mesh_2);
+    this.moons.push({
+      mesh: mesh_2,
+      radius: 3,
+      speed: 1.2,
+      offset: Math.random() * Math.PI * 2,
+      yOffset: 0,
+    });
 
     const geometry3 = new THREE.SphereGeometry(1, 2, 2); //3d dimension of the sphere
     const material3 = new THREE.MeshStandardMaterial({ color: 0xa6f1ac });
     const mesh_3 = new THREE.Mesh(geometry3, material3);
-    mesh_3.position.x = 5;
-    mesh_3.position.y = 5;
+    // mesh_3.position.x = 5;
+    // mesh_3.position.y = 5;
+    // this.group.add(mesh_3);
+    mesh_3.castShadow = true;
+    mesh_3.receiveShadow = true;
     this.group.add(mesh_3);
+    this.moons.push({
+      mesh: mesh_3,
+      radius: 4.5,
+      speed: 0.8,
+      offset: Math.random() * Math.PI * 2,
+      yOffset: 0.5,
+    });
 
     const geometry4 = new THREE.SphereGeometry(1, 10, 10); //3d dimension of the sphere
     const material4 = new THREE.MeshStandardMaterial({ color: 0xbaa44a });
     const mesh_4 = new THREE.Mesh(geometry4, material4);
-    mesh_4.position.x = 7;
-    mesh_4.position.y = -2;
+    // mesh_4.position.x = 7;
+    // mesh_4.position.y = -2;
+    // this.group.add(mesh_4);
+    mesh_4.castShadow = true;
+    mesh_4.receiveShadow = true;
     this.group.add(mesh_4);
+    this.moons.push({
+      mesh: mesh_4,
+      radius: 6,
+      speed: 1.5,
+      offset: Math.random() * Math.PI * 2,
+      yOffset: -0.4,
+    });
+
 
     //Ziyan Pan and Xueyi Xia did step 1 and 2
 
@@ -95,6 +138,14 @@ export class PlanetF {
 
       this.group.add(spaceship);
 
+      this.props.push({
+        object: spaceship,
+        type: "spaceship",
+        originalPosition: spaceship.position.clone(),
+        originalRotation: spaceship.rotation.clone(),
+        originalScale: spaceship.scale.clone(),
+      });
+
       // Load cat model
       loader.load("/models/teamF/cat.glb", (gltfCat) => {
         const cat = gltfCat.scene;
@@ -125,6 +176,14 @@ export class PlanetF {
         cat.rotateX(Math.PI / 2);
 
         this.group.add(cat);
+
+        this.props.push({
+          object: cat,
+          type: "cat",
+          originalPosition: cat.position.clone(),
+          originalRotation: cat.rotation.clone(),
+          originalScale: cat.scale.clone(),
+        });
 
         // Load multiple plants scattered around planet ---
         const numPlants = 18;
@@ -167,6 +226,14 @@ export class PlanetF {
             plant.rotateX(Math.PI / 2);
 
             this.group.add(plant);
+
+            this.props.push({
+              object: plant,
+              type: "plant",
+              originalPosition: plant.position.clone(),
+              originalRotation: plant.rotation.clone(),
+              originalScale: plant.scale.clone(),
+            });
           });
         }
       });
@@ -189,9 +256,100 @@ export class PlanetF {
     this.group.rotation.y += delta * 5;
 
     //TODO: Do the moon orbits and the model animations here.
+    const baseTime = performance.now() * 0.001;
+
+    this.moons.forEach((moonData, index) => {
+      const moon = moonData.mesh;
+      const t = baseTime * moonData.speed + moonData.offset;
+
+      // normal orbit
+      let radius = moonData.radius;
+      let y = moonData.yOffset;
+
+      // when planet is clicked, make the moons more energetic
+      if (this.isPlanetAnimating) {
+        moon.material.color.setHSL(
+          (this.animationTime * 0.5 + index * 0.2) % 1,
+          1,
+          0.5
+        );
+      }
+
+      moon.position.x = Math.cos(t) * radius;
+      moon.position.z = Math.sin(t) * radius;
+      moon.position.y = y;
+
+      moon.rotation.y += delta * 2;
+    });
+
+    if (this.isPlanetAnimating) {
+      this.animationTime += delta;
+
+      this.props.forEach((item, index) => {
+        const obj = item.object;
+        const t = this.animationTime;
+
+        if (item.type === "spaceship") {
+          obj.rotation.y = item.originalRotation.y + t * 8;
+          obj.position.copy(item.originalPosition);
+          obj.position.y += Math.sin(t * 10) * 0.35;
+        }
+
+        if (item.type === "cat") {
+          obj.position.copy(item.originalPosition);
+          obj.position.y += Math.abs(Math.sin(t * 8)) * 0.4;
+
+          const s = 1 + Math.sin(t * 8) * 0.08;
+          obj.scale.set(
+            item.originalScale.x * s,
+            item.originalScale.y * s,
+            item.originalScale.z * s
+          );
+        }
+
+        if (item.type === "plant") {
+          obj.rotation.x = item.originalRotation.x;
+          obj.rotation.y = item.originalRotation.y;
+          obj.rotation.z =
+            item.originalRotation.z + Math.sin(t * 5 + index) * 0.35;
+        }
+      });
+
+      if (this.animationTime > 2) {
+        this.isPlanetAnimating = false;
+        this.animationTime = 0;
+
+        this.props.forEach((item) => {
+          item.object.position.copy(item.originalPosition);
+          item.object.rotation.copy(item.originalRotation);
+          item.object.scale.copy(item.originalScale);
+        });
+      }
+    }
   }
+
 
   click(mouse, scene, camera) {
     //TODO: Do the raycasting here.
+    this.raycaster.setFromCamera(mouse, camera);
+
+    const intersects = this.raycaster.intersectObjects(
+      this.clickableObjects,
+      true
+    );
+
+    if (intersects.length > 0) {
+      this.isPlanetAnimating = true;
+      this.animationTime = 0;
+    }
   }
 }
+
+window.addEventListener("click", (event) => {
+  const mouse = new THREE.Vector2();
+
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  planetF.click(mouse, scene, camera);
+});
